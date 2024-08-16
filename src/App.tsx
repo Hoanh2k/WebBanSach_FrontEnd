@@ -1,24 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
+
+// import { error } from 'console';
+// import { getAll } from './api/SachApi';
 import './App.css';
+import Footer from './layouts/Footer';
+import HomePage from './layouts/HomePage';
+import Navbar from './layouts/Navbar';
+// import List from './layouts/products/ListBook';
 
 function App() {
+  // getAll().then().catch();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="">
+      <nav >
+        <Navbar />
+        <HomePage />
+        {/* <List /> */}
+        <Footer />
+      </nav>
     </div>
   );
 }
