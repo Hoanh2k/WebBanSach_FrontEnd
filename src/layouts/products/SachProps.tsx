@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 // import Book from "../../models/Book";
 import SachModel from "../../models/SachModoel";
 import HinhAnhModel from "../../models/HinhAnhModel";
-import { getAllImage } from "../../api/HinhAnhAPI";
-import { log } from "console";
+import { getAllImage, lay1AnhCua1Sach } from "../../api/HinhAnhAPI";
+import { Link } from "react-router-dom";
+import { Heart } from "react-bootstrap-icons";
+import renderRating from "../utils/StarRating";
+import dinhDangSo from "../utils/DinhDanhSo";
+
 
 interface SachInterface {
     sach: SachModel
@@ -21,7 +25,7 @@ const SachProps: React.FC<SachInterface> = (props) => {
     const [loi, setError] = useState(null);
 
     useEffect(() => {
-        getAllImage(maSach).then(
+        lay1AnhCua1Sach(maSach).then(
             AnhData => {
                 setDanhSachAnh(AnhData);
                 setDangTaiDuLieu(false);
@@ -49,7 +53,14 @@ const SachProps: React.FC<SachInterface> = (props) => {
             </div>
         )
     }
-    console.log(danhSachAnh[0]);
+    // console.log(danhSachAnh[0]);
+
+    let avatar: string = "";
+    if (danhSachAnh[0] && danhSachAnh[0].duLieuAnh) {
+        avatar = danhSachAnh[0].duLieuAnh
+    }
+
+    console.log(props.sach.soLuong);
 
 
     return (
@@ -58,32 +69,38 @@ const SachProps: React.FC<SachInterface> = (props) => {
 
             <div className="card">
                 {/* Anh */}
-                <img
-                    src={`${danhSachAnh[0].duLieuAnh}`} //Chỉ nhận ảnh JPG
-                    className="card-img-top"
-                    alt={props.sach.tenSach} style={{ height: '200px' }} />
+                <Link to={`/sach/${props.sach.maSach}`}>
+                    <img
+                        src={avatar} //Chỉ nhận ảnh JPG
+                        className="card-img-top"
+                        alt={props.sach.tenSach} style={{ height: '200px' }} />
 
-
+                </Link>
                 <div className="card-body">
+
                     <h5 className="card-title">{props.sach.tenTacGia}</h5>
                     <p className="card-text">{props.sach.moTa}</p>
                     {/* Gia */}
-                    <div className="price">
+                    <div className="price row">
                         <span className="original-price">
-                            <del>{props.sach.giaNiemYet}</del>
+                            <del>${dinhDangSo(props.sach.giaNiemYet)}</del>
                         </span>
                         <span className="discounted-price">
-                            <strong>{props.sach.giaBan}</strong>
+                            <strong>${dinhDangSo(props.sach.giaBan)}</strong>
                         </span>
+                    </div>
+
+                    {/* Rating */}
+                    <div className="col">
+                        {renderRating(props.sach.trungBinhXepHang ? props.sach.trungBinhXepHang : 0)}
                     </div>
                     {/* Nut nhan mua hang, thich san pham */}
                     <div className="row mt-2" role="group">
-                        <div className="col-6">
-                            <a href="#" className="btn btn-secondary">
-                                <i className="fas fa-heart"></i>
+                        <div className=" text-end">
+                            <a href="#" className="btn btn-warning me-2">
+                                <Heart style={{ color: 'white' }} />
                             </a>
-                        </div>
-                        <div className="col-6">
+
                             <button className="btn btn-danger btn-block">
                                 <i className="fas fa-shopping-cart"></i>
                             </button>

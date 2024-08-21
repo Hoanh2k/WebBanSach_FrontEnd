@@ -1,14 +1,12 @@
 import HinhAnhModel from "../models/HinhAnhModel";
 import { my_request } from "./Request";
 
-
-
-export async function getAllImage(maSach: number): Promise<HinhAnhModel[]> {
+async function layAnhCuaMotSach(duongDan: string): Promise<HinhAnhModel[]> {
     const result: HinhAnhModel[] = [];
 
-    const url: string = `http://localhost:8080/sach/${maSach}/danhSachHinhAnh`;
 
-    const response = await my_request(url);
+
+    const response = await my_request(duongDan);
 
     // console.log(response);
 
@@ -27,4 +25,17 @@ export async function getAllImage(maSach: number): Promise<HinhAnhModel[]> {
     }
 
     return result;
+}
+
+
+export async function getAllImage(maSach: number): Promise<HinhAnhModel[]> {
+    const url: string = `http://localhost:8080/sach/${maSach}/danhSachHinhAnh`;
+
+    return layAnhCuaMotSach(url);
+}
+
+export async function lay1AnhCua1Sach(maSach: number): Promise<HinhAnhModel[]> {
+    const url: string = `http://localhost:8080/sach/${maSach}/danhSachHinhAnh?sort=maHinhAnh,asc&page=0&size=1`;
+
+    return layAnhCuaMotSach(url);
 }
